@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attention Heatmap — see what a Transformer looks at</title>
+  <meta name="description" content="Type any sentence and watch a real Transformer (BERT) reveal its self-attention — which words each word looks at — across all 6 layers and 12 heads, entirely in your browser." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='2' width='13' height='13' rx='2' fill='%236ea8fe'/><rect x='17' y='2' width='13' height='13' rx='2' fill='%238b7cff' opacity='.55'/><rect x='2' y='17' width='13' height='13' rx='2' fill='%238b7cff' opacity='.35'/><rect x='17' y='17' width='13' height='13' rx='2' fill='%236ea8fe'/></svg>" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">▦</span>
+        <div>
+          <h1>Attention Heatmap</h1>
+          <p class="tagline">Type a sentence. A real Transformer (<strong>BERT</strong>) runs <em>in your browser</em> and shows its <strong>self-attention</strong> — which words each word looks at — across all <strong>6 layers × 12 heads</strong>.</p>
+        </div>
+      </div>
+      <a class="ghlink" id="repo-link" href="#" target="_blank" rel="noopener">&lt;/&gt; Source</a>
+    </header>
+
+    <section class="panel">
+      <div class="input-row">
+        <input id="sentence" type="text" value="The cat sat on the mat because it was tired." placeholder="Type a sentence…" disabled />
+        <button id="viz-btn" class="primary" disabled>Visualize</button>
+      </div>
+      <div class="examples" id="examples">
+        <button class="chip" disabled>The trophy didn't fit in the suitcase because it was too big.</button>
+        <button class="chip" disabled>John gave Mary a book and she thanked him.</button>
+        <button class="chip" disabled>The river bank flooded after the heavy rain.</button>
+        <button class="chip" disabled>Paris is the capital of France.</button>
+      </div>
+      <div class="progress-wrap" id="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <p class="status" id="status">Loading the Transformer (~91 MB, first time only)…</p>
+      </div>
+    </section>
+
+    <section class="panel controls" id="controls" hidden>
+      <div class="ctrl-row"><span class="ctrl-label">Layer</span><div class="seg" id="layers"></div></div>
+      <div class="ctrl-row"><span class="ctrl-label">Head</span><div class="seg" id="heads"></div></div>
+      <div class="ctrl-row"><span class="ctrl-label">View</span>
+        <div class="seg" id="views">
+          <button class="seg-btn active" data-view="matrix">Matrix</button>
+          <button class="seg-btn" data-view="arcs">Connections</button>
+        </div>
+      </div>
+    </section>
+
+    <main class="viz" id="viz" hidden>
+      <p class="guide" id="guide">Each <b>row</b> is a word doing the looking; brighter <b>cells</b> are the words it attends to. Hover a cell for the exact weight, or hover a token to isolate its row/column.</p>
+      <p class="note" id="note" hidden></p>
+      <div class="matrix-wrap" id="matrix-wrap"><div class="heatmap" id="heatmap"></div></div>
+      <div class="arcs-wrap" id="arcs-wrap" hidden><svg id="arcs" xmlns="http://www.w3.org/2000/svg"></svg></div>
+      <div class="legend">
+        <span>low</span>
+        <div class="legend-bar"></div>
+        <span>high</span>
+        <span class="legend-note">attention weight (each row scaled to its own max)</span>
+      </div>
+    </main>
+
+    <footer class="pagefoot">
+      <span>Real self-attention read out from <a href="https://github.com/huggingface/transformers.js" target="_blank" rel="noopener">🤗 Transformers.js</a> (all-MiniLM-L6-v2, a BERT encoder). Model + inference run locally — nothing leaves your browser.</span>
+    </footer>
+  </div>
+  <div class="tooltip" id="tooltip"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
